@@ -25,7 +25,7 @@ open class FirestoreEncoder {
         }
     }
     
-    internal func encodeToTopLevelContainer<Value : Encodable>(_ value: Value) throws -> Any {
+    open func encodeToTopLevelContainer<Value : Encodable>(_ value: Value) throws -> Any {
         let options = _FirebaseEncoder._Options(
             dateEncodingStrategy: nil,
             dataEncodingStrategy: nil,
