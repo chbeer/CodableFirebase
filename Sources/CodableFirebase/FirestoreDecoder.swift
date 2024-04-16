@@ -49,13 +49,23 @@ open class FirestoreDecoder {
 enum GeoPointKeys: CodingKey {
     case latitude, longitude
 }
+enum GeoPointUnderscoreKeys: String, CodingKey {
+    case latitude = "_latitude", longitude = "_longitude"
+}
 
 extension GeoPointType {
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: GeoPointKeys.self)
-        let latitude = try container.decode(Double.self, forKey: .latitude)
-        let longitude = try container.decode(Double.self, forKey: .longitude)
-        self.init(latitude: latitude, longitude: longitude)
+        do {
+            let container = try decoder.container(keyedBy: GeoPointKeys.self)
+            let latitude = try container.decode(Double.self, forKey: .latitude)
+            let longitude = try container.decode(Double.self, forKey: .longitude)
+            self.init(latitude: latitude, longitude: longitude)
+        } catch {
+            let container = try decoder.container(keyedBy: GeoPointUnderscoreKeys.self)
+            let latitude = try container.decode(Double.self, forKey: .latitude)
+            let longitude = try container.decode(Double.self, forKey: .longitude)
+            self.init(latitude: latitude, longitude: longitude)
+        }
     }
     
     public func encode(to encoder: Encoder) throws {

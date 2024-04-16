@@ -1248,8 +1248,8 @@ extension _FirebaseDecoder {
             decoded = decimal as! T
         } else if T.self == IndexSet.self || T.self == NSIndexSet.self {
             decoded = value as! T
-        } else if options.skipFirestoreTypes && (T.self is FirestoreDecodable.Type) {
-            decoded = value as! T
+        } else if options.skipFirestoreTypes, (T.self is FirestoreDecodable.Type), let val = value as? T {
+            decoded = val
         } else {
             self.storage.push(container: value)
             decoded = try T(from: self)
